@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.animeapp.R
 import com.example.animeapp.domain.model.OnBoardingPage
 import com.example.animeapp.ui.theme.*
+import com.example.animeapp.util.Constants.LAST_ON_BOARDING_PAGE
 import com.example.animeapp.util.Constants.ON_BOARDING_PAGE_COUNT
 import com.google.accompanist.pager.*
 
@@ -124,7 +125,7 @@ fun FinishButton(
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
+            visible = pagerState.currentPage == LAST_ON_BOARDING_PAGE
         ) {
             Button(
                 onClick = onClick,
