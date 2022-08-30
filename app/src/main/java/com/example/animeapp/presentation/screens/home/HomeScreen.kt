@@ -1,5 +1,6 @@
 package com.example.animeapp.presentation.screens.home
 
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
@@ -7,5 +8,13 @@ import androidx.navigation.NavHostController
 fun HomeScreen(
     navController: NavHostController
 ) {
+    Scaffold(
+        topBar = {
+            HomeTopBar {
+                
+            }
+        }
+    ) {
 
+    }
 }
