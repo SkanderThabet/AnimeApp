@@ -17,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.animeapp.R
 import com.example.animeapp.domain.model.OnBoardingPage
+import com.example.animeapp.navigation.Screens
 import com.example.animeapp.ui.theme.*
 import com.example.animeapp.util.Constants.LAST_ON_BOARDING_PAGE
 import com.example.animeapp.util.Constants.ON_BOARDING_PAGE_COUNT
@@ -27,7 +29,10 @@ import com.google.accompanist.pager.*
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(
+    navController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf(
         OnBoardingPage.First,
         OnBoardingPage.Second,
@@ -65,7 +70,9 @@ fun WelcomeScreen(navController: NavHostController) {
                 .weight(1f),
             pagerState = pagerState
         ) {
-
+            navController.popBackStack()
+            navController.navigate(Screens.Home.route)
+            welcomeViewModel.saveOnboardingState(completed = true)
         }
     }
 
