@@ -2,8 +2,9 @@ package com.example.animeapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.animeapp.data.local.BorutoDatabase
-import com.example.animeapp.util.Constants.BORUTO_DATABASE
+import com.example.animeapp.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +19,11 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
-        context,
-        BorutoDatabase::class.java,
-        BORUTO_DATABASE
-    ).build()
+    ): RoomDatabase {
+        return Room.databaseBuilder(
+            context,
+            BorutoDatabase::class.java,
+            Constants.BORUTO_DATABASE
+        ).build()
+    }
 }
