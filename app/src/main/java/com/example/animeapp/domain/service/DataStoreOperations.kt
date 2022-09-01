@@ -1,4 +1,4 @@
-package com.example.animeapp.domain.repository
+package com.example.animeapp.domain.service
 
 import kotlinx.coroutines.flow.Flow
 

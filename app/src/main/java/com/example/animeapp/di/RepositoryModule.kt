@@ -3,7 +3,7 @@ package com.example.animeapp.di
 import android.content.Context
 import com.example.animeapp.data.repository.DataStoreOperationsImpl
 import com.example.animeapp.data.repository.Repository
-import com.example.animeapp.domain.repository.DataStoreOperations
+import com.example.animeapp.domain.service.DataStoreOperations
 import com.example.animeapp.domain.use_cases.UseCases
 import com.example.animeapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.example.animeapp.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
