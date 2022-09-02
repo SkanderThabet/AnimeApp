@@ -85,6 +85,7 @@ fun handlePagingResult(
                 false
             }
             heroes.itemCount < 1 -> {
+                EmptyScreen()
                 false
             }
             else -> true
