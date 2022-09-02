@@ -81,7 +81,7 @@ fun handlePagingResult(
                 false
             }
             error != null -> {
-                ShimmerEffect()
+                EmptyScreen(error = error, heroes = heroes)
                 false
             }
             heroes.itemCount < 1 -> {
