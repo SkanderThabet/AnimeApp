@@ -22,7 +22,7 @@ class HeroRemoteMediator @Inject constructor(
 
     override suspend fun initialize(): InitializeAction {
         val currentTime = System.currentTimeMillis()
-        val lastUpdated = heroRemoteKeysDao.getRemoteKeys(id = 1)?.lastUpdated ?: 0L
+        val lastUpdated = heroRemoteKeysDao.getRemoteKeys(heroId = 1)?.lastUpdated ?: 0L
         val cacheTimeout = 1440
 
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
@@ -31,13 +31,9 @@ class HeroRemoteMediator @Inject constructor(
         } else {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         }
-
     }
 
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, Hero>
-    ): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, Hero>): MediatorResult {
         return try {
             val page = when (loadType) {
                 LoadType.REFRESH -> {
@@ -46,20 +42,23 @@ class HeroRemoteMediator @Inject constructor(
                 }
                 LoadType.PREPEND -> {
                     val remoteKeys = getRemoteKeyForFirstItem(state)
-                    val prevPage = remoteKeys?.prevPage ?: return MediatorResult.Success(
-                        endOfPaginationReached = remoteKeys != null
-                    )
+                    val prevPage = remoteKeys?.prevPage
+                        ?: return MediatorResult.Success(
+                            endOfPaginationReached = remoteKeys != null
+                        )
                     prevPage
                 }
                 LoadType.APPEND -> {
                     val remoteKeys = getRemoteKeyForLastItem(state)
-                    val nextPage = remoteKeys?.nextPage ?: return MediatorResult.Success(
-                        endOfPaginationReached = remoteKeys != null
-                    )
+                    val nextPage = remoteKeys?.nextPage
+                        ?: return MediatorResult.Success(
+                            endOfPaginationReached = remoteKeys != null
+                        )
                     nextPage
                 }
             }
-            val response = borutoApi.getAllHeroes()
+
+            val response = borutoApi.getAllHeroes(page = page)
             if (response.heroes.isNotEmpty()) {
                 borutoDatabase.withTransaction {
                     if (loadType == LoadType.REFRESH) {
@@ -84,34 +83,33 @@ class HeroRemoteMediator @Inject constructor(
         } catch (e: Exception) {
             return MediatorResult.Error(e)
         }
-
     }
 
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Hero>): HeroRemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(
+        state: PagingState<Int, Hero>
+    ): HeroRemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
-                heroRemoteKeysDao.getRemoteKeys(id)
+                heroRemoteKeysDao.getRemoteKeys(heroId = id)
             }
         }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Hero>): HeroRemoteKeys? {
-        return state.pages.firstOrNull {
-            it.data.isNotEmpty()
-        }?.data?.firstOrNull()
+    private suspend fun getRemoteKeyForFirstItem(
+        state: PagingState<Int, Hero>
+    ): HeroRemoteKeys? {
+        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { hero ->
-                heroRemoteKeysDao.getRemoteKeys(id = hero.id)
-
+                heroRemoteKeysDao.getRemoteKeys(heroId = hero.id)
             }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Hero>): HeroRemoteKeys? {
-        return state.pages.lastOrNull() {
-            it.data.isNotEmpty()
-        }?.data?.lastOrNull()
+    private suspend fun getRemoteKeyForLastItem(
+        state: PagingState<Int, Hero>
+    ): HeroRemoteKeys? {
+        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { hero ->
-                heroRemoteKeysDao.getRemoteKeys(id = hero.id)
+                heroRemoteKeysDao.getRemoteKeys(heroId = hero.id)
             }
     }
 }

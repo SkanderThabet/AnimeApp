@@ -16,6 +16,7 @@ class RemoteDataSourceImpl(
     private val borutoApi: BorutoApi,
     private val borutoDatabase: BorutoDatabase
 ) : RemoteDataSource {
+
     private val heroDao = borutoDatabase.heroDao()
 
     @OptIn(ExperimentalPagingApi::class)
