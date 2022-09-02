@@ -1,7 +1,6 @@
 package com.example.animeapp.presentation.screens.common
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,46 +22,82 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.animeapp.R
 import com.example.animeapp.domain.model.Hero
 import com.example.animeapp.navigation.Screens
 import com.example.animeapp.presentation.components.RatingWidget
+import com.example.animeapp.presentation.components.ShimmerEffect
 import com.example.animeapp.ui.theme.*
 import com.example.animeapp.util.Constants.BASE_URL
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ListContent(
     heroes: LazyPagingItems<Hero>,
     navController: NavHostController
 ) {
-    Log.d("ListContent", heroes.loadState.toString())
-    LazyColumn(
-        contentPadding = PaddingValues(all = SMALL_PADDING),
-        verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
-    ) {
-        items(
-            items = heroes,
-            key = { hero ->
-                hero.id
-            }
-        ) { hero ->
-            hero?.let {
-                HeroItem(hero = it, navController = navController)
+    val result = handlePagingResult(heroes = heroes)
+
+    if (result) {
+        LazyColumn(
+            contentPadding = PaddingValues(all = SMALL_PADDING),
+            verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
+        ) {
+            items(
+                items = heroes,
+                key = { hero ->
+                    hero.id
+                }
+            ) { hero ->
+                hero?.let {
+                    HeroItem(hero = it, navController = navController)
+                }
             }
         }
     }
 }
 
 @Composable
+fun handlePagingResult(
+    heroes: LazyPagingItems<Hero>
+): Boolean {
+    heroes.apply {
+        val error = when {
+            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+            else -> null
+        }
+
+        return when {
+            loadState.refresh is LoadState.Loading -> {
+                ShimmerEffect()
+                false
+            }
+            error != null -> {
+                ShimmerEffect()
+                false
+            }
+            heroes.itemCount < 1 -> {
+                false
+            }
+            else -> true
+        }
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
 fun HeroItem(
     hero: Hero,
     navController: NavHostController
 ) {
-
     Box(
         modifier = Modifier
             .height(HERO_ITEM_HEIGHT)
@@ -70,7 +105,6 @@ fun HeroItem(
                 navController.navigate(Screens.Details.passHeroId(heroId = hero.id))
             },
         contentAlignment = Alignment.BottomStart
-
     ) {
         Surface(shape = RoundedCornerShape(size = LARGE_PADDING)) {
             AsyncImage(
@@ -133,6 +167,7 @@ fun HeroItem(
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 @Preview
 fun HeroItemPreview() {
@@ -154,6 +189,7 @@ fun HeroItemPreview() {
     )
 }
 
+@ExperimentalCoilApi
 @Composable
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 fun HeroItemDarkPreview() {
