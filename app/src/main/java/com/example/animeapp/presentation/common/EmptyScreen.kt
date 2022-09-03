@@ -1,4 +1,4 @@
-package com.example.animeapp.presentation.screens.common
+package com.example.animeapp.presentation.common
 
 import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState

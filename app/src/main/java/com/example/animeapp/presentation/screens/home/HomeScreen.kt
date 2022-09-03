@@ -6,7 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.animeapp.navigation.Screens
-import com.example.animeapp.presentation.screens.common.ListContent
+import com.example.animeapp.presentation.common.ListContent
 
 @Composable
 fun HomeScreen(

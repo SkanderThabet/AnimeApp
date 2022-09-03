@@ -1,4 +1,4 @@
-package com.example.animeapp.presentation.search
+package com.example.animeapp.presentation.screens.search
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
