@@ -15,7 +15,7 @@ import com.example.animeapp.ui.theme.SMALL_PADDING
 import com.example.animeapp.ui.theme.titleColor
 
 @Composable
-fun OrederedList(
+fun OrderedList(
     title: String,
     items: List<String>,
     textColor: Color
@@ -42,7 +42,7 @@ fun OrederedList(
 @Preview(showBackground = true)
 @Composable
 fun OrderedListPreview() {
-    OrederedList(
+    OrderedList(
         title = "Family",
         items = listOf("Minato", "Kushina"),
         textColor = MaterialTheme.colors.titleColor
