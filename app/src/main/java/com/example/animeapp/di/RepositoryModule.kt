@@ -6,6 +6,7 @@ import com.example.animeapp.data.repository.Repository
 import com.example.animeapp.domain.service.DataStoreOperations
 import com.example.animeapp.domain.use_cases.UseCases
 import com.example.animeapp.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
+import com.example.animeapp.domain.use_cases.get_selected_hero.GetSelectedHeroUseCase
 import com.example.animeapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.example.animeapp.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
 import com.example.animeapp.domain.use_cases.search_heroes.SearchHeroesUseCase
@@ -35,6 +36,7 @@ object RepositoryModule {
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository = repository),
             getAllHeroesUseCase = GetAllHeroesUseCase(repository = repository),
             searchHeroesUseCase = SearchHeroesUseCase(repository = repository),
+            getSelectedHeroUseCase = GetSelectedHeroUseCase(repository = repository)
         )
     }
 }
