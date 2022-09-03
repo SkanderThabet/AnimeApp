@@ -20,9 +20,9 @@ fun SearchScreen(
         topBar = {
             SearchTopBar(
                 text = searchQuery,
-                onTextChange = { searchViewModel.updateSearchQuery(it) },
+                onTextChange = { searchViewModel.updateSearchQuery(query = it) },
                 onSearchClicked = {
-                    searchViewModel.searchdHeroes(query = it)
+                    searchViewModel.searchHeroes(query = it)
                 },
                 onCloseClicked = {
                     navController.popBackStack()

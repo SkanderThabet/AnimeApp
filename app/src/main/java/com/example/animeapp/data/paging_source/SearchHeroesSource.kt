@@ -4,16 +4,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.animeapp.data.remote.BorutoApi
 import com.example.animeapp.domain.model.Hero
-import javax.inject.Inject
 
-class SearchHeroesSource @Inject constructor(
+class SearchHeroesSource(
     private val borutoApi: BorutoApi,
     private val query: String
 ) : PagingSource<Int, Hero>() {
-
-    override fun getRefreshKey(state: PagingState<Int, Hero>): Int? {
-        return state.anchorPosition
-    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Hero> {
         return try {
@@ -23,9 +18,8 @@ class SearchHeroesSource @Inject constructor(
                 LoadResult.Page(
                     data = heroes,
                     prevKey = apiResponse.prevPage,
-                    nextKey = apiResponse.nextPage,
-
-                    )
+                    nextKey = apiResponse.nextPage
+                )
             } else {
                 LoadResult.Page(
                     data = emptyList(),
@@ -36,5 +30,9 @@ class SearchHeroesSource @Inject constructor(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, Hero>): Int? {
+        return state.anchorPosition
     }
 }
