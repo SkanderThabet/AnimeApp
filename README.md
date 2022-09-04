@@ -33,7 +33,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Backend-Server](#backend)
-- [Libraries](#libraries)
+- [Libraries](#libraries-and-technologies)
 
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -65,7 +65,7 @@ Check out the backend server repository by clicking on this link:
 [Backend-repo]
 
 
-## Libraries
+## Libraries And Technologies
 
 * Jetpack Compose
 * ROOM Database
