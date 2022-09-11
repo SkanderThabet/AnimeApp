@@ -48,7 +48,7 @@ Simple Android application that allows you to browse Boruto's characters.
  
 ## Features
 
-A few of the things you can do with To-Do App:
+A few of the things you can do with Anime App:
 
 * View Boruto's characters.
 * Search for specific character.
